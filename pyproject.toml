@@ -7,6 +7,7 @@ authors = ["Julien Rossi <j.rossi@uva.nl>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 transformers = "^4.17.0"
+torch = "^1.11.0"
 
 [tool.poetry.dev-dependencies]
 
