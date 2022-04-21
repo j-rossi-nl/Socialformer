@@ -9,6 +9,7 @@ python = "^3.8"
 transformers = "^4.17.0"
 torch = "^1.11.0"
 datasets = "^2.1.0"
+matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
 
