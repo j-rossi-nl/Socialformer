@@ -14,14 +14,9 @@ def get_static_distance_matrix(n):
     Return:
         normalized probability matrix
     '''
-    probability_matrix=np.zeros((n,n))
-    for i in range(n):
-        for j in range(i,n):
-            '''
-            P_{sd}(i,j)=\frac{1}{(1+|i-j|/p)^2}
-            '''
-            probability_matrix[i][j]=probability_matrix[j][i]=1/((j-i)//50+1)**2
+    probability_matrix=np.fromfunction(function=lambda i, j: 1/((j-i)//50+1)**2, shape=(n, n))
     return norm(probability_matrix)
+
 
 '''
 load the precalculate static distance based probability matrix   
@@ -40,5 +35,3 @@ if __name__=="__main__":
         path="./weights/static/"+str(i)+".txt"
         with open(path,"wb") as f:
             pickle.dump(w,f)
-
-

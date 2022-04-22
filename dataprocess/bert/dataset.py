@@ -70,11 +70,29 @@ class TrainDataset(Dataset):
     def __getitem__(self, item):
         irdata = self.ir_dataset[item]
 
-        qry_tensor=torch.LongTensor(np.array(irdata['qry'])).to(self._device)
-        psg_tensor=torch.LongTensor(np.array(irdata['psg'])).to(self._device)
-        
-        qry_embeddings=self._bert_model.embeddings.word_embeddings(qry_tensor)
-        psg_embeddings=self._bert_model.embeddings.word_embeddings(psg_tensor)
+        qry_encoding = self._tokenizer.encode_plus(
+            irdata['qry'],
+            truncation=True,
+            max_length=self._max_seq_length,
+            padding='max_length',
+            return_tensors='pt',
+        )
+
+        psg_encoding = self._tokenizer.encode_plus(
+            irdata['psg'],
+            truncation=True,
+            max_length=self._max_seq_length,
+            padding='max_length',
+            return_tensors='pt'
+        )
+
+        qry_embeddings=self._bert_model.embeddings.word_embeddings(qry_encoding['input_ids'].to(self._device))
+        psg_embeddings=self._bert_model.embeddings.word_embeddings(psg_encoding['input_ids'].to(self._device))
+
+        # qry_embeddings [1, seq_len, emb_dim] -> [seq_len, emb_dim]
+        # same for psg_embeddings
+        qry_embeddings = torch.squeeze(qry_embeddings, dim=0)
+        psg_embeddings = torch.squeeze(psg_embeddings, dim=0)
 
         # calculate cos_weight and the corresponding top_k indices
         cos_weight,indices=get_att_dis(qry_embeddings,psg_embeddings,top_k=self.top_k,padding=2048)

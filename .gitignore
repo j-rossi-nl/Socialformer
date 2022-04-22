@@ -162,4 +162,9 @@ cython_debug/
 
 /dataprocess/bert/model/*
 /dataprocess/bert/dataset_cache/*
-/dataprocess/weights/*
+/dataprocess/weights/*.txt
+/dataprocess/weights/static/*.txt
+!/dataprocess/weights/.gitkeep
+!/dataprocess/weights/static/.gitkeep
+/dataprocess/graph.png
+/dataprocess/results/*.txt
